@@ -3,6 +3,7 @@ import logging
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
+import asyncio
 
 # Load environment variables
 load_dotenv()
@@ -45,6 +46,9 @@ async def on_ready():
     )
     logging.info(f"✅ Logged in as {bot.user} (ID: {bot.user.id})")
     logging.info("👀 Presence set to: Watching for new members")
+    
+    # Start keep-alive task
+    asyncio.create_task(keep_alive())
 
 # Auto-assign role and send DM on member join
 @bot.event
@@ -94,6 +98,13 @@ async def on_member_join(member: discord.Member):
         logging.error(f"❌ Failed to send DM due to HTTP error: {http_exc}")
 
     logging.info(f"👋 New member joined: {member} in {guild.name}")
+
+# Keep-alive function to prevent Render from sleeping
+async def keep_alive():
+    """Send periodic logs to keep the service active"""
+    while True:
+        await asyncio.sleep(300)  # Every 5 minutes
+        logging.info("🔄 Bot is alive and running...")
 
 # Run the bot
 if __name__ == "__main__":
