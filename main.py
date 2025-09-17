@@ -95,15 +95,15 @@ async def on_member_join(member: discord.Member):
 
     logging.info(f"👋 New member joined: {member} in {guild.name}")
 
-# Health check endpoint for Render
-@bot.event
-async def on_ready():
-    # This will be called when the bot is ready
-    pass
-
 # Run the bot
 if __name__ == "__main__":
     if BOT_TOKEN:
-        bot.run(BOT_TOKEN)
+        try:
+            logging.info("🚀 Starting AstraBoost bot...")
+            bot.run(BOT_TOKEN)
+        except Exception as e:
+            logging.error(f"❌ Bot crashed: {e}")
+            raise
     else:
-        logging.error("❌ BOT_TOKEN is not set in the .env file!")
+        logging.error("❌ BOT_TOKEN is not set! Please check your environment variables.")
+        exit(1)
