@@ -1,0 +1,14 @@
+services:
+  - type: worker
+    name: astraboost-bot
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: GUILD_ID
+        sync: false
+      - key: MEMBER_ROLE_ID
+        sync: false
